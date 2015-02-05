@@ -1,0 +1,1 @@
+/usr/bin/cc   -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/flv_muxer.dir/src/main.c.o CMakeFiles/flv_muxer.dir/src/flv-muxer.c.o  -o flv_muxer  -L/usr/local/lib  

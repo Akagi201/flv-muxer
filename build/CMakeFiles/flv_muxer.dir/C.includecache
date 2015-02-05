@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../deps/lwlog/lwlog.h
+stdio.h
+-
+errno.h
+-
+string.h
+-
+
+/Users/akagi201/ClionProjects/flv-muxer/src/amf-byte-stream.h
+string.h
+-
+stdint.h
+-
+
+/Users/akagi201/ClionProjects/flv-muxer/src/flv-muxer.c
+stdio.h
+-
+stdlib.h
+-
+flv-muxer.h
+/Users/akagi201/ClionProjects/flv-muxer/src/flv-muxer.h
+amf-byte-stream.h
+/Users/akagi201/ClionProjects/flv-muxer/src/amf-byte-stream.h
+
+/Users/akagi201/ClionProjects/flv-muxer/src/flv-muxer.h
+stdbool.h
+-
+stdint.h
+-
+
+/Users/akagi201/ClionProjects/flv-muxer/src/main.c
+lwlog/lwlog.h
+/Users/akagi201/ClionProjects/flv-muxer/src/lwlog/lwlog.h
+flv-muxer.h
+/Users/akagi201/ClionProjects/flv-muxer/src/flv-muxer.h
+
