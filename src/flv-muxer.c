@@ -10,13 +10,15 @@
 #include "flv-muxer.h"
 #include "amf-byte-stream.h"
 
-typedef struct flv_tag {
+struct flv_tag {
     uint8_t type;
     uint8_t data_size[3];
     uint8_t timestamp[3];
     uint8_t timestamp_ex;
     uint8_t streamid[3];
-} flv_tag_t;
+} __attribute__((__packed__));
+
+typedef struct flv_tag flv_tag_t;
 
 static FILE *g_file_handle = NULL;
 static uint64_t g_time_begin;
@@ -49,6 +51,12 @@ void write_flv_header(bool is_have_audio, bool is_have_video) {
     return;
 }
 
+/*
+ * @brief
+ * @param[in] buf:
+ * @param[in] buf_len: flv tag body size
+ * @param[in] timestamp: flv tag timestamp
+ */
 void write_video_tag(uint8_t *buf, uint32_t buf_len, uint32_t timestamp) {
     uint8_t prev_size[4] = {0};
 
@@ -57,7 +65,7 @@ void write_video_tag(uint8_t *buf, uint32_t buf_len, uint32_t timestamp) {
     memset(&flvtag, 0, sizeof(flvtag));
 
     flvtag.type = FLV_TAG_TYPE_VIDEO;
-    ui24_to_bytes((uint8_t *) flvtag.data_size, buf_len);
+    ui24_to_bytes(flvtag.data_size, buf_len);
     flvtag.timestamp_ex = (uint8_t) ((timestamp >> 24) & 0xff);
     flvtag.timestamp[0] = (uint8_t) ((timestamp >> 16) & 0xff);
     flvtag.timestamp[1] = (uint8_t) ((timestamp >> 8) & 0xff);
@@ -73,11 +81,7 @@ void write_video_tag(uint8_t *buf, uint32_t buf_len, uint32_t timestamp) {
 
 }
 
-void write_audio_tag(uint8_t *buf, int buf_len, uint32_t timestamp) {
-
-}
-
-void write_avc_data_tag(const uint8_t *data, int data_len, unsigned int timestamp, int is_keyframe) {
+void write_avc_data_tag(const uint8_t *data, uint32_t data_len, uint32_t timestamp, int is_keyframe) {
     uint8_t *buf = (uint8_t *) malloc(data_len + 5);
     uint8_t *pbuf = buf;
 
@@ -111,7 +115,7 @@ void write_avc_data_tag(const uint8_t *data, int data_len, unsigned int timestam
     return;
 }
 
-void write_video_data_tag(const uint8_t *data, int data_len, unsigned int timestamp) {
+void write_video_data_tag(const uint8_t *data, uint32_t data_len, uint32_t timestamp) {
     if (g_time_begin == -1) {
         g_time_begin = timestamp;
     }
@@ -123,7 +127,7 @@ void write_video_data_tag(const uint8_t *data, int data_len, unsigned int timest
     write_video_tag((uint8_t *) data, data_len, (uint32_t) (timestamp - g_time_begin));
 }
 
-void write_avc_sequence_header_tag(const uint8_t *sps, int sps_len, const uint8_t *pps, int pps_len) {
+void write_avc_sequence_header_tag(const uint8_t *sps, uint32_t sps_len, const uint8_t *pps, uint32_t pps_len) {
     uint8_t avc_seq_buf[4096] = {0};
     uint8_t *pbuf = avc_seq_buf;
 
@@ -154,7 +158,7 @@ void write_avc_sequence_header_tag(const uint8_t *sps, int sps_len, const uint8_
     memcpy(pbuf, pps, pps_len);
     pbuf += pps_len;
 
-    write_video_data_tag(avc_seq_buf, (int) (pbuf - avc_seq_buf), 0);
+    write_video_data_tag(avc_seq_buf, (uint32_t) (pbuf - avc_seq_buf), 0);
 
     return;
 }

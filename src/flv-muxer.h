@@ -14,14 +14,14 @@ void write_flv_header(bool is_have_audio, bool is_have_video);
 
 void write_aac_sequence_header_tag(int sample_rate, int channel);
 
-void write_avc_sequence_header_tag(const uint8_t *sps, int sps_len, const uint8_t *pps, int pps_len);
+void write_avc_sequence_header_tag(const uint8_t *sps, uint32_t sps_len, const uint8_t *pps, uint32_t pps_len);
 
-void write_aac_data_tag(const uint8_t *data, int data_len, unsigned int timestamp);
+void write_aac_data_tag(const uint8_t *data, uint32_t data_len, uint32_t timestamp);
 
-void write_avc_data_tag(const uint8_t *data, int data_len, unsigned int timestamp, int is_keyframe);
+void write_avc_data_tag(const uint8_t *data, uint32_t data_len, uint32_t timestamp, int is_keyframe);
 
-void write_audio_data_tag(const uint8_t *data, int data_len, unsigned int timestamp);
+void write_audio_data_tag(const uint8_t *data, uint32_t data_len, uint32_t timestamp);
 
-void write_video_data_tag(const uint8_t *data, int data_len, unsigned int timestamp);
+void write_video_data_tag(const uint8_t *data, uint32_t data_len, uint32_t timestamp);
 
 #endif // FLV_MUXER_H_
